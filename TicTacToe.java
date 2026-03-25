@@ -66,6 +66,12 @@ public class TicTacToe {
         turn = 'x';
     }
 
+    public TicTacToe (char[][] board) {
+        this.board = board;
+        hasTwoPlayers = true;
+        turn = 'x';
+    }
+
     public TicTacToe (boolean hasTwoPlayers) {
         board = new char[3][3];
         for (int row = 0; row < 3; row++) {
@@ -125,5 +131,23 @@ public class TicTacToe {
             System.out.println("Try again");
             takeTurn();
         }
+    }
+
+    public boolean equals(TicTacToe other, char xOrO) {
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                if (this.board[row][col] == xOrO && other.board[row][col] == xOrO) {
+                    System.out.print("testing");
+                    if (this.board[row][col] != other.board[row][col]) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public char[][] getBoard() {
+        return board;
     }
 }

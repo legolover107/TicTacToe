@@ -4,6 +4,9 @@ public class TicTacToeDriver {
         System.out.println(game);
         for (int i = 0; i < 9; i++) {
             game.takeTurn();
+            if (WinningBoards.containsWin(game)) {
+                System.exit(0);
+            }
         }
     }
 }
