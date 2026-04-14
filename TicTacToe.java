@@ -6,13 +6,13 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 public class TicTacToe {
-    private boolean smallBoard = false;
+    private int boardSize = 8;
     public final boolean DOLOGGING = true;
     private char[][] board;
     private boolean hasTwoPlayers;
     private char turn;
     private String file = "boards.txt";
-    private String[] x   =   {  "     XXXXXXX        XXXXXXX     ", //1
+    private String[] x16 =   {  "     XXXXXXX        XXXXXXX     ", //1
                                 "     X:::::X        X:::::X     ", //2
                                 "     X:::::X        X:::::X     ", //3
                                 "     X::::::X      X::::::X     ", //4
@@ -29,7 +29,7 @@ public class TicTacToe {
                                 "     X:::::X        X:::::X     ", //15
                                 "     XXXXXXX        XXXXXXX     "};//16
 
-    private String[] o   =   {  "          OOOOOOOOOOOO          ", //1
+    private String[] o16 =   {  "          OOOOOOOOOOOO          ", //1
                                 "        OO::::::::::::OO        ", //2
                                 "      OO::::::::::::::::OO      ", //3
                                 "     O:::::::OOOOOO:::::::O     ", //4
@@ -46,7 +46,7 @@ public class TicTacToe {
                                 "        OO::::::::::::OO        ", //15
                                 "          OOOOOOOOOOOO          "};//16
                             
-    private String[] blank = {  "                                ", //1
+    private String[] blank16={  "                                ", //1
                                 "                                ", //2
                                 "                                ", //3
                                 "                                ", //4
@@ -62,6 +62,33 @@ public class TicTacToe {
                                 "                                ", //14
                                 "                                ", //15
                                 "                                "};//16
+
+    private String[] x8 =    {  "  ___    ___  ", //1
+                                "  \\  \\  /  /  ", //2
+                                "   \\  \\/  /   ", //3
+                                "    \\    /    ", //4
+                                "    /    \\    ", //5
+                                "   /  /\\  \\   ", //6
+                                "  /__/  \\__\\  ", //7
+                                "              "}; //8
+
+    private String[] o8 =    {  "  __________  ", //1
+                                " /   ____   \\ ", //2
+                                " |  /    \\  | ", //3
+                                " |  |    |  | ", //4
+                                " |  |    |  | ", //5
+                                " |  \\____/  | ", //6
+                                " \\__________/ ", //7
+                                "              " }; //8
+
+    private String[] blank8 ={  "              ", //1
+                                "              ", //2
+                                "              ", //3
+                                "              ", //4
+                                "              ", //5
+                                "              ", //6
+                                "              ", //7
+                                "              "}; //8
 
     public TicTacToe () {
         board = new char[3][3];
@@ -93,18 +120,18 @@ public class TicTacToe {
 
     public String toString() {
         String str = "";
-        if (!smallBoard) {
+        if (boardSize == 16) {
             for (int h = 0; h < board.length; h++) {
                 char[] row = board[h];
                 for (int i = 0; i < 16; i++) {
                     for (int j = 0; j < row.length; j++) {
                         char col = row[j];
                         if (col == 'x') {
-                            str += x[i];
+                            str += x16[i];
                         } else if (col == 'o') {
-                            str += o[i];
+                            str += o16[i];
                         } else {
-                            str += blank[i];
+                            str += blank16[i];
                         }
                         if (j < 2) {
                             str += "###";
@@ -118,7 +145,32 @@ public class TicTacToe {
                     }
                 }
             }
-        } else {
+        } else if (boardSize == 8) {
+            for (int h = 0; h < board.length; h++) {
+                char[] row = board[h];
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < row.length; j++) {
+                        char col = row[j];
+                        if (col == 'x') {
+                            str += x8[i];
+                        } else if (col == 'o') {
+                            str += o8[i];
+                        } else {
+                            str += blank8[i];
+                        }
+                        if (j < 2) {
+                            str += "##";
+                        }
+                    }
+                    str += "\n";
+                }
+                if (h < 2) {
+                    for (int i = 0; i < 2; i++) {
+                        str += "##############################################\n";
+                    }
+                }
+            }
+        } else if (boardSize == 1) {
             for (int h = 0; h < board.length; h++) {
                 char[] row = board[h];
                 for (int j = 0; j < row.length; j++) {
@@ -134,8 +186,9 @@ public class TicTacToe {
                         str += "#";
                     }
                 }
+                str += "\n";
                 if (h < 2) {
-                    str += "\n###########\n";
+                    str += "###########\n";
                 }
             }
         }
