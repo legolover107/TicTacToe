@@ -148,13 +148,13 @@ public class TicTacToe {
         System.out.println(String.valueOf(turn).toUpperCase() + "'s turn");
         System.out.print("Enter location using number pad:\t");
         int num = scan.nextInt() - 1;
-        int row, col;
+        int row = 0, col = 0;
         if (num >= 0) {
             row = 2 - (num / 3);
             col = num % 3;
         } else {
-            row = 0;
-            col = 0;
+            System.out.println("Invalid input, try again");
+            takeTurn();
         }
         if (board[row][col] == ' ') {
             board[row][col] = turn;
