@@ -281,4 +281,9 @@ public class TicTacToe {
             System.err.println("Error: File not found");
         }
     }
+
+    public char[][] getBoard() {
+        return board;
+    }
+
 }
