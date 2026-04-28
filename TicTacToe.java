@@ -9,9 +9,11 @@ public class TicTacToe {
     private int boardSize = 8;
     public final boolean DOLOGGING = true;
     private char[][] board;
+    private int[][] turnTaken;
     private boolean hasTwoPlayers;
     private char turn;
     private String file = "boards.txt";
+    private int turns;
     private String[] x16 =   {  "     XXXXXXX        XXXXXXX     ", //1
                                 "     X:::::X        X:::::X     ", //2
                                 "     X:::::X        X:::::X     ", //3
@@ -97,8 +99,10 @@ public class TicTacToe {
                 board[row][col] = ' ';
             }
         }
+        turnTaken = new int[3][3];
         hasTwoPlayers = true;
         turn = 'x';
+        turns = 0;
     }
 
     public TicTacToe (boolean hasTwoPlayers) {
@@ -108,14 +112,18 @@ public class TicTacToe {
                 board[row][col] = ' ';
             }
         }
+        turnTaken = new int[3][3];
         this.hasTwoPlayers = hasTwoPlayers;
         turn = 'x';
+        turns = 0;
     }
 
     public TicTacToe (char[][] board) {
         this.board = board;
+        turnTaken = new int[3][3];
         hasTwoPlayers = true;
         turn = 'x';
+        turns = 0;
     }
 
     public String toString() {
@@ -211,10 +219,12 @@ public class TicTacToe {
         }
         if (board[row][col] == ' ') {
             board[row][col] = turn;
-            logRound();
             if (turn == 'x') {
+                turns++;
+                turnTaken[row][col] = turns;
                 turn = 'o';
             } else if (turn == 'o') {
+                turnTaken[row][col] = turns;
                 turn = 'x';
             }
         } else {
@@ -248,7 +258,7 @@ public class TicTacToe {
         }
     }
 
-    public void logRound() {
+    public void logGame() {
         File log = new File(file);
         log.setWritable(DOLOGGING);
         try {
@@ -256,14 +266,16 @@ public class TicTacToe {
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 3; col++) {
                     if (board[row][col] != ' ') {
-                        logWriter.write(Character.toString(board[row][col]));
+                        logWriter.write(Character.toString(board[row][col]) + Integer.toString(turnTaken[row][col]));
                     } else {
-                        logWriter.write("_");
+                        logWriter.write("__");
+                    }
+                    if (col < 2) {
+                        logWriter.write(" ");
                     }
                 }
                 logWriter.write("\n");
             }
-            logWriter.write("---\n");
             logWriter.close();
         } catch (IOException e) {
             System.err.println("Error: File not found");
@@ -284,6 +296,20 @@ public class TicTacToe {
 
     public char[][] getBoard() {
         return board;
+    }
+
+    public int getTurns() {
+        return turns;
+    }
+
+    public void playGame() {
+        //logDate();
+        for (int i = 0; i < 9; i++) {
+            takeTurn();
+            if (WinningBoards.containsWin(this, 0)) {
+                System.exit(0);
+            }
+        }
     }
 
 }

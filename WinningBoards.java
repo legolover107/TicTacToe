@@ -1,7 +1,4 @@
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Stream;
 import java.io.IOException;
 import java.nio.file.*;
 
@@ -73,8 +70,9 @@ public class WinningBoards {
             if (!test.equals(win)) {
                 return containsWin(test, take + 1);
             }
-            test.logText("X wins\n");
-            System.out.println(test + "\nX wins");
+            test.logText("X_" + test.getTurns());
+            test.logGame();
+            System.out.println(test + "\nX won in " + test.getTurns() + " turns");
             try {
                 List<String> lines = Files.readAllLines(Paths.get("LargeLetters.txt"));
                 for (int h = 0; h < test.getBoard().length; h++) {
@@ -89,9 +87,9 @@ public class WinningBoards {
                                 } else if (take < 6) {
                                     str += lines.get(i+32);
                                 } else if (take == 6) {
-                                    
+                                    str += lines.get(i+48);
                                 } else if (take == 7) {
-                                    
+                                    str += lines.get(i+64);
                                 }
                             } else if (col == 'x') {
                                 str += lines.get(i);
@@ -107,8 +105,12 @@ public class WinningBoards {
                         str += "\n";
                     }
                     if (h < 2) {
-                        for (int i = 0; i < 2; i++) {
-                            str += "########################################################################################################\n";
+                        if (take < 3) {
+                            for (int i = 0; i < 2; i++) {
+                                str += "########################################################################################################\n";
+                            }
+                        } else if (take == 3) {
+                            str += "############[][][][]############"
                         }
                     }
                 }
@@ -122,8 +124,52 @@ public class WinningBoards {
             if (!test.equals(win)) {
                 return containsWin(test, take + 1);
             }
-            test.logText("O wins\n");
-            System.out.println(test + "\nO wins");
+            test.logText("O_" + test.getTurns());
+            test.logGame();
+            System.out.println(test + "\nO won in " + test.getTurns() + " turns");
+            try {
+                List<String> lines = Files.readAllLines(Paths.get("LargeLetters.txt"));
+                for (int h = 0; h < test.getBoard().length; h++) {
+                    char[] row = test.getBoard()[h];
+                    char[] winningBoardRow = OWINS[take - 8][h];
+                    for (int i = 80; i < 96; i++) {
+                        for (int j = 0; j < row.length; j++) {
+                            char col = row[j];
+                            if (winningBoardRow[j] == 'o') {
+                                if (take < 11) {
+                                    str += lines.get(i+16);
+                                } else if (take < 14) {
+                                    str += lines.get(i+32);
+                                } else if (take == 14) {
+                                    str += lines.get(i+48);
+                                } else if (take == 15) {
+                                    str += lines.get(i+64);
+                                }
+                            } else if (col == 'x') {
+                                str += lines.get(i-80);
+                            } else if (col == 'o') {
+                                str += lines.get(i);
+                            } else {
+                                str += "                                ";
+                            }
+                            if (j < 2) {
+                                str += "####";
+                            }
+                        }
+                        str += "\n";
+                    }
+                    if (h < 2) {
+                        if (take < 11) {
+                            for (int i = 0; i < 2; i++) {
+                                str += "########################################################################################################\n";
+                            }
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                System.err.println("File not found");
+            }
+            System.out.println(str);
             return true;
         }
     }
