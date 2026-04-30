@@ -274,7 +274,7 @@ public class TicTacToe {
                         logWriter.write(" ");
                     }
                 }
-                logWriter.write("\n");
+                logWriter.write("\n\n");
             }
             logWriter.close();
         } catch (IOException e) {
